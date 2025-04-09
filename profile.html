@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .profile-header {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+        
+        /* Profile Photo */
+        .profile-photo-container {
+            margin: 0 auto 20px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #3498db;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .upload-btn:hover {
+            background: #2980b9;
+        }
+        
+        #photo-upload {
+            display: none;
+        }
+        
+        /* Profile Info */
+        .profile-info {
+            padding: 30px;
+        }
+        
+        .info-section {
+            margin-bottom: 25px;
+        }
+        
+        .info-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .info-item {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            width: 150px;
+            color: #7f8c8d;
+        }
+        
+        .info-value {
+            flex: 1;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #ecf0f1;
+        }
+        
+        /* Location Section */
+        .location-map {
+            height: 200px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        /* Password Reset */
+        .reset-password {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-title {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .info-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .info-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .profile-header {
+                padding: 30px 20px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <button class="back-button" onclick="window.location.href='home.html'">←</button>
+            <div class="profile-photo-container">
+                <img id="profile-photo" class="profile-photo" src="https://via.placeholder.com/150" alt="Profile Photo">
+                <label for="photo-upload" class="upload-btn">+</label>
+                <input type="file" id="photo-upload" accept="image/*">
+            </div>
+            <h1 id="username">Andile Phala</h1>
+            <p id="user-location">Amsterdam, Netherlands</p>
+        </div>
+        
+        <div class="profile-info">
+            <div class="info-section">
+                <h2>Account Information</h2>
+                <div class="info-item">
+                    <span class="info-label">Username:</span>
+                    <span class="info-value" id="display-username">andile phala</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value" id="display-email">example@gmail.com</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Password:</span>
+                    <span class="info-value">••••••••</span>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h2>Location</h2>
+                <div class="info-item">
+                    <span class="info-label">Current Location:</span>
+                    <span class="info-value" id="display-location">Amsterdam, Netherlands</span>
+                </div>
+                <div class="location-map">
+                    [Map of Amsterdam would display here]
+                </div>
+            </div>
+            
+            <div class="reset-password">
+                <h2>Password Reset</h2>
+                <p>You can reset your password here. You'll receive an email with instructions.</p>
+                <button class="btn btn-danger" id="reset-password-btn">Reset Password</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Password Reset Modal -->
+    <div class="modal" id="reset-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Reset Password</h2>
+            <div class="form-group">
+                <label for="current-password">Current Password</label>
+                <input type="password" id="current-password" placeholder="Enter your current password">
+            </div>
+            <div class="form-group">
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password" placeholder="Enter your new password">
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm New Password</label>
+                <input type="password" id="confirm-password" placeholder="Confirm your new password">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancel-reset">Cancel</button>
+                <button class="btn btn-danger" id="confirm-reset">Reset Password</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const photoUpload = document.getElementById('photo-upload');
+        const profilePhoto = document.getElementById('profile-photo');
+        const resetPasswordBtn = document.getElementById('reset-password-btn');
+        const resetModal = document.getElementById('reset-modal');
+        const cancelResetBtn = document.getElementById('cancel-reset');
+        const confirmResetBtn = document.getElementById('confirm-reset');
+        
+        // Load user data (in a real app, this would come from your backend)
+        document.addEventListener('DOMContentLoaded', () => {
+            // This is just sample data - in a real app you would fetch this
+            const userData = {
+                username: "andile phala",
+                name: "Andile Phala",
+                email: "@example.com",
+                location: "Amsterdam, Netherlands",
+                photoUrl: "https://via.placeholder.com/150"
+            };
+            
+            // Set the user data
+            document.getElementById('username').textContent = userData.name;
+            document.getElementById('display-username').textContent = userData.username;
+            document.getElementById('display-email').textContent = userData.email;
+            document.getElementById('display-location').textContent = userData.location;
+            document.getElementById('user-location').textContent = userData.location;
+            profilePhoto.src = userData.photoUrl;
+        });
+        
+        // Profile photo upload
+        photoUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    profilePhoto.src = event.target.result;
+                    // In a real app, you would upload this to your server here
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Password reset functionality
+        resetPasswordBtn.addEventListener('click', () => {
+            resetModal.style.display = 'flex';
+        });
+        
+        cancelResetBtn.addEventListener('click', () => {
+            resetModal.style.display = 'none';
+        });
+        
+        confirmResetBtn.addEventListener('click', () => {
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            // Simple validation
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                alert('Password must be at least 8 characters');
+                return;
+            }
+            
+            // In a real app, you would send this to your backend
+            alert('Password reset request sent. You will receive an email with instructions.');
+            resetModal.style.display = 'none';
+            
+            // Clear the form
+            document.getElementById('current-password').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === resetModal) {
+                resetModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

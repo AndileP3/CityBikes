@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth with Firestore</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="signin" class="container1">
+        <h2>Sign In</h2>
+        <input type="email" id="username" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="signIn('/hello.html')">Login</button>
+        <button onclick="switchScreen('signup')">Sign Up</button>
+        <button onclick="switchScreen('forgot-password')">Forgot Password?</button>
+    </div>
+
+    <div id="signup" class="container1 hidden">
+        <h2>Sign Up</h2>
+        <input type="text" id="new-username" placeholder="Full Name">
+        <input type="email" id="new-email" placeholder="Email">
+        <input type="password" id="new-password" placeholder="Password">
+        <button onclick="signUp('/hello.html')">Register</button>
+        <button onclick="switchScreen('signin')">Back to Sign In</button>
+    </div>
+
+    <div id="forgot-password" class="container1 hidden">
+        <h2>Forgot Password</h2>
+        <input type="email" id="email" placeholder="Enter your email">
+        <button onclick="sendResetLink()">Send Reset Link</button>
+        <button onclick="switchScreen('signin')">Back to Sign In</button>
+    </div>
+
+    <div id="signout" class="container1 hidden">
+        <h2>Welcome, <span id="user-name"></span></h2>
+        <p>You are signed in.</p>
+        <a href="home.html">
+            <button>Go to Home</button>
+        </a>
+    </div>
+    
+
+   <script type = "module" src="script.js"></script>
+</body>
+</html>
